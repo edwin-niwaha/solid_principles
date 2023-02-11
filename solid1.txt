@@ -1,0 +1,124 @@
+// S.O.L.I.D
+
+// S -> Sinlge Responsbility Principle (SRP)
+    // A class (module) should have only one reason for change
+
+// O -> Open-Closed Principle (OCP)
+    // A class (module) should be open for extension, but closed for modification
+
+// L -> Liskov Subsititution Principle (LSP)
+    // If S is a subtype of T, then objects of T should be replaceable with objects of S.
+
+// I -> Interface Segregation Principle (ISP)
+    // no class should be forced to depend on methods it does not use
+
+// D -> Dependency Inversion Principle (DIP)
+    // High level modules should not depend on low level modules, 
+    // but instead both should depend on an interface.
+
+
+// DEVELOPING A COMPUTER SYSTEM
+
+/*
+    What a computer should do
+    - Store information
+    - Input data
+    - boot
+    - output information
+    - process data
+*/
+
+interface IComputer{
+    boot():boolean;
+    input(data:any):void;
+    store(data:any):void;
+    retrieve(identifier:string):any;
+    process(data:any):any;
+    output(data:any):any;
+}
+
+interface Foldable{
+    fold():void;
+}
+
+
+class Computer implements IComputer{
+    // Attributes
+    private model: string;
+    private serialNumber: string;
+    private brand: string;
+
+    // Methods
+    constructor(model: string, serialNumber: string, brand: string){
+        this.model = model;
+        this.serialNumber = serialNumber;
+        this.brand = brand;
+    }
+    boot(){
+        console.log("Booting.....");
+        return true    
+    }
+
+    input(data:string){
+        console.log("Inputing data.....");        
+    }
+
+    store(){
+        console.log("Storing data.....");                
+    }
+    retrieve(){
+        console.log("Retrieving data.....");        
+    }
+    process(){
+        console.log("Processing data.....");
+    }
+    output(){
+        console.log("Outputing Information.....");
+    }
+}
+
+// New Feature: Laptop Computer class
+    // New Behavior: fold()
+
+// LSP
+class Laptop extends Computer implements Foldable{
+    fold(): void {
+        console.log("I am foldeing");
+    }
+}
+
+
+class UnbootableComputer extends Computer{
+    boot(): boolean {
+        throw "Not supported!"
+    }
+}
+
+
+function testLiskov(computerArg:Computer){
+    computerArg.boot();
+    computerArg.input('data');
+    computerArg.store();
+    computerArg.retrieve();
+    computerArg.process();
+    computerArg.output();    
+}
+
+
+let computer:Computer = new Computer('XPS-13', 'DFH-BRA-BRA-BRA-1X34', 'DELL'); //Super
+let laptop:Computer = new Laptop('LPS-13', 'RFH-BXA-BRA-BRA-1X34', 'HP') // Subtype
+let unbootableComputer:Computer = new UnbootableComputer('UPS-13', 'RFH-BXA-BRA-BRA-1X34', 'HP') // Subtype
+
+testLiskov(computer)
+testLiskov(laptop)
+testLiskov(unbootableComputer)
+
+
+
+
+
+
+
+
+
+
